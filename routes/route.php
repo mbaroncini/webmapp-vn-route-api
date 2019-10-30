@@ -50,12 +50,12 @@ add_action( 'rest_api_init', function () {
                 {
                     if ( isset($val['product']) && is_array($val['product']) )
                     {
-                        $model_season[$key]['product'] = webmapp_vn_route_api_format_products($val['product']);
+                        $route['acf']['model_season'][$key]['product'] = webmapp_vn_route_api_format_products($val['product']);
                     }
                 }
 
             }
-            
+
 
             $route = webmapp_vn_route_api_route_object_customization($route);
 
@@ -72,7 +72,11 @@ function webmapp_vn_route_api_format_products( $found_products )
     $products = [];
     foreach ( $found_products as $key => $product_id )
     {
-        $product = wc_get_product($product_id)->get_data();
+        $product_o = wc_get_product($product_id);
+        $product =  $product_o->get_data();
+        $product['attributes'] = array_map(function($i){
+            return $i->get_data();
+        },$product_o->get_attributes());
 
         $handle = new WC_Product_Variable($product_id);
         $variations_ids = $handle->get_children();

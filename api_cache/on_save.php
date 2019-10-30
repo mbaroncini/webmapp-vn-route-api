@@ -79,7 +79,7 @@ function wm_vn_writeRestApi( $json , $route_id)
         }
     }
     $log_file_data = $dirpath.$route_id.'.json';
-    $check = file_put_contents($log_file_data, $json, FILE_APPEND);
+    $check = file_put_contents($log_file_data, $json);
 }
 
 
